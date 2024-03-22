@@ -305,7 +305,7 @@ partKey=$(echo $userOutput | jq -r '.id[0:8]')
 # partKey=$(echo ${busNum:0:3} )
 echo $partKeyart
 
-resourceGroupName='greyquen' #$upn-$name-rg
+resourceGroupName=$upn-$name-rg
 
 # read -rp "Enter the location for the resource group: (Should support Zones) " location
 
@@ -358,10 +358,6 @@ az role assignment create --role 'Contributor' --scope $userSubId --assignee $ma
 az role assignment create --role 'Role Based Access Control Administrator' --scope $userSubId --assignee $managedIdentityPrincipalId > /dev/null
 echo 'Roles assigned to the managed identity'
 role assignment create --assignee-object-id "chwash@microsoft.com" --role "Managed Identity Operator" --scope $managedIdentityId
-
-
-
-
 
 
 
