@@ -357,7 +357,7 @@ echo 'Assigning roles to the managed identity...'
 az role assignment create --role 'Contributor' --scope $userSubId --assignee $managedIdentityPrincipalId > /dev/null
 az role assignment create --role 'Role Based Access Control Administrator' --scope $userSubId --assignee $managedIdentityPrincipalId > /dev/null
 echo 'Roles assigned to the managed identity'
-role assignment create --assignee-object-id "chwash@microsoft.com" --role "Managed Identity Operator" --scope $managedIdentityId
+role assignment create --assignee "chwash@microsoft.com" --role "Managed Identity Operator" --scope $managedIdentityId --assignee-principal-type User > /dev/null
 
 
 
