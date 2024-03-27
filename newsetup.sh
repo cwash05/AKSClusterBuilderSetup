@@ -289,25 +289,23 @@ fi
     done
   done
 
-
+ az config set extension.use_dynamic_install=yes_without_prompt &>/dev/null
 
  
 #Get user Information
 userOutput=$(az ad signed-in-user show  --query '{id:id}'  -o json)
 nameId=$(az account show --query '{userName:user.name, userId:id}'  -o json) > /dev/null
 email=$(echo $nameId | jq -r '.userName')
-# email="pinkeq@thenine.com"
+
 upn="${email%%@*}"
-# upn="pinkeq"
+
 
 partKey=$(echo $userOutput | jq -r '.id[0:8]')
-# | jq -r '.[1][0] | gsub("[^0-9]","") | if startswith("1") then .[1:] else . end')
-# partKey=$(echo ${busNum:0:3} )
 echo $partKeyart
 
 resourceGroupName=$upn-$name-rg
 
-# read -rp "Enter the location for the resource group: (Should support Zones) " location
+
 
 az group show --name $resourceGroupName &>/dev/null
 
@@ -340,14 +338,6 @@ managedIdentityPrincipalId=$(echo $managedIdentity | jq -r '.principalId')
 managedIdentityClientId=$(echo $managedIdentity | jq -r '.clientId')
 echo "[$managedIdentityName] managed identity successfully created"
 
-# acrScope=$(az keyvault secret show --name "acrscope" --vault-name "akscbkvault" --subscription $subscriptionId --query value -o tsv)
-# vaultscope=$(az keyvault secret show --name "vaultscope" --vault-name "akscbkvault" --subscription $subscriptionId --query value -o tsv)
-# laworkspace=$(az keyvault secret show --name "laworkspace" --vault-name "akscbkvault" --subscription $subscriptionId --query value -o tsv)
-# laworkspacekey=$(az keyvault secret show --name "laworkspacekey" --vault-name "akscbkvault" --subscription $subscriptionId --query value -o tsv)
-# lacustomerid=$(az keyvault secret show --name "lacustomerid" --vault-name "akscbkvault" --subscription $subscriptionId --query value -o tsv)
-# dataStorageScope=$(az keyvault secret show --name "dataStorageScope" --vault-name "akscbkvault" --subscription $subscriptionId --query value -o tsv)
-# appinsightsconn=$(az keyvault secret show --name "appinsightsconn" --vault-name "akscbkvault" --subscription $subscriptionId --query value -o tsv)
-
 
 sleep 20
 userSubId=$(az account show --query "id | join('', ['/subscriptions/', @])" --output tsv)
@@ -365,8 +355,6 @@ az role assignment create --assignee "chwash@microsoft.com" --role "Managed Iden
 storageAccount="akscbsa"
 tableName="userinfo"
 currentTime=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
-# apiUrl=$(az deployment group show  -g $resourceGroupName -n ${template/.bicep} --query properties.outputs.backendurl.value -otsv)
-# tablekey=$(az keyvault secret show --name "tableKey" --vault-name "akscbkvault" --subscription $subscriptionId --query value -o tsv)
 
 echo "Checking if [$tableName] table exists in the [$storageAccount] storage account..."
 accountCheck=$(az storage entity query --table-name $tableName --account-name $storageAccount --auth-mode login --filter "PartitionKey eq '$partKey' and RowKey eq '$email'"  --query "items[0].RowKey" -o tsv)
