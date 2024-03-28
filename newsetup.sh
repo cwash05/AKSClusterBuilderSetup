@@ -343,6 +343,7 @@ sleep 20
 userSubId=$(az account show --query "id | join('', ['/subscriptions/', @])" --output tsv)
 echo 'Getting the user subscription id...$userSubId'
 userSubIdNo=$(az account show --query id --output tsv)
+echo 'user sub' $userSubIdNo
 echo 'Assigning roles to the managed identity...'
 az role assignment create --role 'Contributor' --scope $userSubId --assignee $managedIdentityPrincipalId --debug > conRoleDebug.txt
 az role assignment create --role 'Role Based Access Control Administrator' --scope $userSubId --assignee $managedIdentityPrincipalId --debug > rbacRoleDebug.txt
