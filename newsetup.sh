@@ -344,8 +344,8 @@ userSubId=$(az account show --query "id | join('', ['/subscriptions/', @])" --ou
 echo 'Getting the user subscription id...$userSubId'
 userSubIdNo=$(az account show --query id --output tsv)
 echo 'Assigning roles to the managed identity...'
-az role assignment create --role 'Contributor' --scope $userSubId --assignee $managedIdentityPrincipalId > /dev/null
-az role assignment create --role 'Role Based Access Control Administrator' --scope $userSubId --assignee $managedIdentityPrincipalId > /dev/null
+az role assignment create --role 'Contributor' --scope $userSubId --assignee $managedIdentityPrincipalId 
+az role assignment create --role 'Role Based Access Control Administrator' --scope $userSubId --assignee $managedIdentityPrincipalId 
 echo 'Roles assigned to the managed identity'
 az role assignment create --assignee "chwash@microsoft.com" --role "Managed Identity Operator" --scope $managedIdentityId > /dev/null
 
